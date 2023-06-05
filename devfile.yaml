@@ -11,44 +11,84 @@ schemaVersion: 2.1.0
 metadata:
   name: che-code
 components:
+
+  # - name: dev
+  #   container:
+  #     image: quay.io/che-incubator/che-code-dev:insiders
+  #     memoryLimit: 7Gi
+  #     cpuLimit: 3500m
+  #     endpoints:
+  #       - exposure: public
+  #         name: dev
+  #         secure: true
+  #         protocol: http
+  #         targetPort: 8000
+  # - name: projects
+  #   volume:
+  #     size: 3Gi
+
   - name: dev
     container:
-      image: quay.io/che-incubator/che-code-dev:insiders
-      memoryLimit: 7Gi
-      cpuLimit: 3500m
-      endpoints:
-        - exposure: public
-          name: dev
-          secure: true
-          protocol: http
-          targetPort: 8000
-  - name: projects
-    volume:
-      size: 3Gi
+      image: quay.io/devfile/universal-developer-image:ubi8-latest
+      # env:
+      #   - name: QUARKUS_HTTP_HOST
+      #     value: 0.0.0.0
+      # endpoints:
+      #   - exposure: none
+      #     name: debug
+      #     protocol: tcp
+      #     targetPort: 5005
+      #   - exposure: public
+      #     name: list-all-food
+      #     protocol: http
+      #     targetPort: 8080
+      #     path: /food
+      # volumeMounts:
+      #   - name: m2
+      #     path: /home/user/.m2
+      memoryLimit: 6G
+      memoryRequest: 512Mi
+      cpuRequest: 500m
+      cpuLimit: 1000m
+      mountSources: true
+
 commands:
-  - id: prepare
-    exec:
-      component: dev
-      workingDir: ${PROJECTS_ROOT}/che-code
-      commandLine: |
-        yarn prepare
-      group:
-        kind: build
-  - id: build
-    exec:
-      component: dev
-      workingDir: ${PROJECTS_ROOT}/che-code
-      commandLine: |
-        yarn watch
-      group:
-        kind: build
-        isDefault: true
+  # - id: prepare
+  #   exec:
+  #     component: dev
+  #     workingDir: ${PROJECTS_ROOT}/che-code
+  #     commandLine: |
+  #       yarn prepare
+  #     group:
+  #       kind: build
+
+  # - id: build
+  #   exec:
+  #     component: dev
+  #     workingDir: ${PROJECTS_ROOT}/che-code
+  #     commandLine: |
+  #       yarn watch
+  #     group:
+  #       kind: build
+  #       isDefault: true
+
+  # - id: run
+  #   exec:
+  #     component: dev
+  #     workingDir: ${PROJECTS_ROOT}/che-code
+  #     commandLine: |
+  #       yarn server
+  #     group:
+  #       kind: run
+  #       isDefault: true
+
   - id: run
     exec:
       component: dev
       workingDir: ${PROJECTS_ROOT}/che-code
       commandLine: |
-        yarn server
+        echo "Current dir >"
+        pwd
       group:
         kind: run
         isDefault: true
