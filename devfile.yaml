@@ -46,7 +46,7 @@ components:
       # volumeMounts:
       #   - name: m2
       #     path: /home/user/.m2
-      memoryLimit: 9G
+      memoryLimit: 12G
       memoryRequest: 512Mi
       cpuRequest: 500m
       cpuLimit: 1000m
@@ -108,4 +108,26 @@ commands:
         kind: run
         isDefault: true
 
+  - id: build-che-code-image
+    exec:
+      component: dev
+      workingDir: ${PROJECTS_ROOT}/che-code
+      commandLine: |
+        echo "Build che-code image"
+        cp -f build/dockerfiles/assembly.Dockerfile build/dockerfiles/assembly.copy.Dockerfile
+
+        REPLACE="FROM linux-musl-amd64 as linux-musl-content"
+        sed -i -r -e "s|${REPLACE}||" build/dockerfiles/assembly.copy.Dockerfile
+
+        REPLACE="COPY --from=linux-musl-content --chown=0:0 /checode-linux-musl /mnt/rootfs/checode-linux-musl"
+        sed -i -r -e "s|${REPLACE}||" build/dockerfiles/assembly.copy.Dockerfile
+
+        export DOCKER_BUILDKIT=1
+        docker build -f build/dockerfiles/assembly.copy.Dockerfile -t che-code .
+
+        docker tag che-code:latest che-code:next
+        docker save -o /tmp/che-code-latest.tar che-code:latest che-code:next
+      group:
+        kind: run
+        isDefault: true
 
