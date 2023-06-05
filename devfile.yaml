@@ -46,7 +46,7 @@ components:
       # volumeMounts:
       #   - name: m2
       #     path: /home/user/.m2
-      memoryLimit: 7G
+      memoryLimit: 9G
       memoryRequest: 512Mi
       cpuRequest: 500m
       cpuLimit: 1000m
