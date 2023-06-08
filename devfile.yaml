@@ -29,7 +29,8 @@ components:
 
   - name: dev
     container:
-      image: quay.io/devfile/universal-developer-image:ubi8-latest
+      # image: quay.io/devfile/universal-developer-image:ubi8-latest
+      image: quay.io/vgulyy/universal-developer-image:ubi8-latest-1
       # env:
       #   - name: QUARKUS_HTTP_HOST
       #     value: 0.0.0.0
@@ -123,7 +124,7 @@ commands:
         sed -i -r -e "s|${REPLACE}||" build/dockerfiles/assembly.copy.Dockerfile
 
         export DOCKER_BUILDKIT=1
-        docker build -f build/dockerfiles/assembly.copy.Dockerfile -t che-code .
+        podman build -f build/dockerfiles/assembly.copy.Dockerfile -t che-code .
 
         docker tag che-code:latest che-code:next
         docker save -o /tmp/che-code-latest.tar che-code:latest che-code:next
