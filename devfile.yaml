@@ -94,6 +94,18 @@ commands:
         kind: run
         isDefault: true
 
+  - id: prepade-node-16
+    exec:
+      component: dev
+      workingDir: ${PROJECTS_ROOT}/che-code
+      commandLine: |
+        nvm install 16.17
+        nvm use 16.17
+        npm install yarn
+      group:
+        kind: build
+        isDefault: true
+
   - id: compile-libc
     exec:
       component: dev
