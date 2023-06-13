@@ -28,7 +28,7 @@ components:
       size: 3Gi
 
 commands:
-  - id: install-dependencies
+  - id: prepare
     exec:
       component: dev
       workingDir: ${PROJECTS_ROOT}/che-code
@@ -36,18 +36,7 @@ commands:
         yarn prepare
       group:
         kind: build
-
   - id: build
-    exec:
-      component: dev
-      workingDir: ${PROJECTS_ROOT}/che-code
-      commandLine: |
-        yarn build
-      group:
-        kind: build
-        isDefault: true
-
-  - id: watch
     exec:
       component: dev
       workingDir: ${PROJECTS_ROOT}/che-code
@@ -56,7 +45,6 @@ commands:
       group:
         kind: build
         isDefault: true
-
   - id: run
     exec:
       component: dev
